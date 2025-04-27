@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Background Remover</title>
+  
+  <!-- External Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    /* Global Styles */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 36px;
+      font-weight: 600;
+      color: #6c63ff;
+    }
+
+    p {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 40px;
+      color: #555;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: #6c63ff;
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      margin-bottom: 40px;
+    }
+
+    .hero h2 {
+      font-size: 48px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .hero p {
+      font-size: 20px;
+      margin-bottom: 25px;
+    }
+
+    .hero button {
+      padding: 12px 24px;
+      background-color: #fff;
+      border: none;
+      border-radius: 50px;
+      color: #6c63ff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero button:hover {
+      background-color: #6c63ff;
+      color: #fff;
+    }
+
+    /* Upload Section */
+    .upload-section {
+      text-align: center;
+      background: white;
+      padding: 40px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .upload-section input[type="file"] {
+      display: none;
+    }
+
+    .upload-section label.upload-btn {
+      background-color: #6c63ff;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin-bottom: 10px; /* <-- NEW: adds a nice gap */
+    }
+
+    .upload-section label.upload-btn:hover {
+      background-color: #5851db;
+    }
+
+    .upload-section .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #6c63ff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+      display: none;
+    }
+
+    .upload-section #progress {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #333;
+      display: none;
+    }
+
+    .upload-section #result img {
+      max-width: 100%;
+      max-height: 300px;
+      object-fit: contain;
+      background: #f9f9f9;
+      padding: 10px;
+      margin-top: 20px;
+      border-radius: 12px;
+    }
+
+    .upload-section a {
+      display: inline-block;
+      margin-top: 20px;
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .upload-section a:hover {
+      text-decoration: underline;
+    }
+
+    #result {
+  margin-top: 40px;
+  text-align: center;
+}
+
+#result h2 {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #333;
+}
+
+#result img {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+}
+
+.download-btn {
+  display: inline-block;
+  margin-top: 30px;
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #218838;
+}
+
+.awesome-button {
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(106, 17, 203, 0.3);
+  transition: all 0.4s ease;
+  margin-top: 15px;
+}
+
+.awesome-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(37, 117, 252, 0.4);
+  background: linear-gradient(135deg, #2575fc 0%, #6a11cb 100%);
+}
+
+#file-info {
+  font-size: 14px;
+  color: #777;
+  margin-top: 4px;
+}
+#upload-text {
+  font-size: 25px;
+  font-weight: bold;
+  color: #6dd80e;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background: linear-gradient(90deg, hsl(139, 67%, 44%), #0dd33e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+#file-input {
+  margin-top: 10px;
+}
+
+#file-name {
+  font-size: 14px;
+  margin-top: 4px;
+  color: #333;
+}
+
+#images-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.image-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 300px;
+}
+
+.image-block img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.download-link {
+  margin-top: 8px;
+  text-decoration: none;
+  color: #2575fc;
+  font-weight: bold;
+  font-size: 14px;
+} 
+
+    /* Animation */
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h2>Remove Background Instantly!</h2>
+      <p id="upload-text">Upload your image and let our tool automatically remove the background for you.</p>
+      <!-- <button onclick="document.getElementById('upload-form').scrollIntoView({behavior: 'smooth'});">Get Started</button> -->
+    </div>
+  </section>
+
+  <!-- Upload Section -->
+  <!-- Upload Section -->
+<section class="upload-section" id="upload-form">
+    <h1>Upload Your Image</h1>
+    <form method="POST" enctype="multipart/form-data" id="upload-form">
+      <div style="margin-bottom: 20px;">
+        <input id="file-input" type="file" name="image" accept="image/png" required hidden>
+        <label for="file-input" class="upload-btn">Choose File</label>
+        <div id="file-name" style="margin-top: 10px; font-weight: 600; color: #555;">No file selected</div> 
+        <p id="file-info">📁 Supported formats: JPG, JPEG, PNG</p>
+
+      </div>
+      <!-- <button type="submit" class="upload-btn">Remove Background</button> -->
+      <button id="upload-btn" class="awesome-button">Remove Background</button>
+
+    </form>
+  
+    <div id="loading" style="display: none;">
+      <div class="spinner"></div>
+      <div id="progress">0%</div>
+    </div>
+  
+    <div id="result"></div>
+  </section>
+  
+  <!-- JavaScript -->
+  <script>
+    const form = document.getElementById('upload-form');
+    const loading = document.getElementById('loading');
+    const spinner = document.querySelector('.spinner');
+    const progress = document.getElementById('progress');
+    const result = document.getElementById('result');
+    const fileInput = document.getElementById('file-input');
+    const fileNameDisplay = document.getElementById('file-name');
+
+    // Display file name when file is selected
+    fileInput.addEventListener('change', function() {
+      const fileName = fileInput.files[0]?.name || 'No file selected';
+      fileNameDisplay.innerText = fileName;
+      fileNameDisplay.style.display = fileName ? 'inline' : 'none';
+    });
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+      const file = fileInput.files[0];
+        
+      if (!file) return;
+
+      
+      const formData = new FormData();
+      formData.append('image', file);
+
+      // Show loading spinner and reset progress
+      loading.style.display = 'block';
+      spinner.style.display = 'block';
+      progress.style.display = 'block';
+      progress.innerText = '0%';
+      result.innerHTML = '';
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '/', true);
+
+      xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+          const percentComplete = Math.round((e.loaded / e.total) * 100);
+          progress.innerText = percentComplete + '%';
+        }
+      };
+
+      xhr.onload = function() {
+  loading.style.display = 'none';
+  if (xhr.status === 200) {
+    const response = JSON.parse(xhr.responseText);
+
+    result.innerHTML = '';
+
+    // Create a container div to hold both images side by side
+    const imagesContainer = document.createElement('div');
+    imagesContainer.style.display = 'flex';
+    imagesContainer.style.justifyContent = 'center';
+    imagesContainer.style.alignItems = 'center';
+    imagesContainer.style.gap = '40px'; // space between images
+    imagesContainer.style.flexWrap = 'wrap'; // responsive on mobile
+
+    // Original Image
+    const originalDiv = document.createElement('div');
+    const originalTitle = document.createElement('h2');
+    originalTitle.innerText = 'Original Image';
+    const originalImg = document.createElement('img');
+    originalImg.src = URL.createObjectURL(file);
+    originalImg.style.maxWidth = '300px';
+    originalImg.style.borderRadius = '12px';
+    originalImg.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+    originalDiv.appendChild(originalTitle);
+    originalDiv.appendChild(originalImg);
+
+    // Processed Image
+    const processedDiv = document.createElement('div');
+    const processedTitle = document.createElement('h2');
+    processedTitle.innerText = 'Processed Image';
+    const processedImg = document.createElement('img');
+    processedImg.src = response.image_url;
+    processedImg.style.maxWidth = '300px';
+    processedImg.style.borderRadius = '12px';
+    processedImg.style.boxShadow = '0 4px 8px rgba(0,0,0,0.1)';
+    processedDiv.appendChild(processedTitle);
+    processedDiv.appendChild(processedImg);
+
+    // Append both divs to container
+    imagesContainer.appendChild(originalDiv);
+    imagesContainer.appendChild(processedDiv);
+
+    // Append container to result
+    result.appendChild(imagesContainer);
+
+    // Download Button
+    const downloadLink = document.createElement('a');
+    downloadLink.href = response.image_url;
+    downloadLink.download = "processed_image.png";
+    downloadLink.innerText = "Download Processed Image";
+    downloadLink.className = "download-btn";
+    downloadLink.style.marginTop = "30px";
+    result.appendChild(downloadLink);
+
+    // Reset file input
+    fileInput.value = '';
+    document.getElementById('file-name').innerText = 'No file selected';
+  } else {
+    alert('Error occurred while uploading.');
+  }
+};
+
+
+      xhr.send(formData);
+    });
+  </script>
+
+</body>
+</html>
