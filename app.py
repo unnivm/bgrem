@@ -46,4 +46,5 @@ def processed_file(filename):
     return send_file(os.path.join(app.config['PROCESSED_FOLDER'], filename), mimetype='image/png')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = 80
+    app.run(host='0.0.0.0', port=port)
