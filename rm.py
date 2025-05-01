@@ -3,11 +3,23 @@ from PIL import Image, UnidentifiedImageError
 from rembg import remove
 import io
 
+
+
 # Page configuration
 st.set_page_config(page_title="Background Remover & Editor", layout="centered")
 
 st.title("🖼️ Background Remover + Editor")
 st.markdown("Upload a `.png` image, remove the background, resize it, set background color, and download it in your preferred format!")
+
+# Example images section
+col1, col2 = st.columns(2)
+
+with col1:
+    st.image("sample_images/original.png", caption="🎯 Original Image", use_container_width=True)
+
+with col2:
+    st.image("sample_images/processed.png", caption="✅ Background Removed", use_container_width=True)
+
 
 # File uploader
 uploaded_file = st.file_uploader("Choose a PNG file", type=["png"])
