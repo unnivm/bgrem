@@ -1,12 +1,55 @@
+from streamlit_lottie import st_lottie
 import streamlit as st
 from PIL import Image, UnidentifiedImageError
 from rembg import remove
 import io
+import requests
+from datetime import datetime
 
+def load_lottieurl(url):
+    r = requests.get(url)
+    if r.status_code != 200:
+        return None
+    return r.json()
 
+# Custom background style for Lottie container
+lottie_bg_style = """
+<div style="background-color: #1f2937; padding: 20px; border-radius: 12px; width: fit-content; margin: auto;">
+  <div id="lottie-container"></div>
+</div>
+"""
+# Show styled container
+#st.markdown(lottie_bg_style, unsafe_allow_html=True)
 
+current_hour = datetime.now().hour
+
+if 5 <= current_hour < 12:
+    # Morning
+    bg_color = "linear-gradient(to right, #fbc2eb, #a6c1ee)"
+elif 12 <= current_hour < 17:
+    # Afternoon
+    bg_color = "linear-gradient(to right, #fbc2eb, #fad0c4)"
+elif 17 <= current_hour < 20:
+    # Evening
+    bg_color = "linear-gradient(to right, #667eea, #764ba2)"
+else:
+    # Night
+    bg_color = "linear-gradient(to right, #2c3e50, #000000)"
+
+st.markdown(f"""
+    <style>
+        .stApp {{
+            background: {bg_color};
+            color: white;
+        }}
+    </style>
+""", unsafe_allow_html=True)
+
+lottie_animation = load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_jcikwtux.json")
+st_lottie(lottie_animation, speed=1, reverse=False, loop=True, quality="high", height=200)
 # Page configuration
-st.set_page_config(page_title="Background Remover & Editor", layout="centered")
+#st.set_page_config(page_title="Background Remover & Editor", layout="centered")
+
 
 st.title("🖼️ Background Remover + Editor")
 st.markdown("Upload a `.png` image, remove the background, resize it, set background color, and download it in your preferred format!")
