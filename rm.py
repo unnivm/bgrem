@@ -5,6 +5,9 @@ from rembg import remove
 import io
 import requests
 from datetime import datetime
+import os
+os.environ["PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION"] = "python"
+
 
 def load_lottieurl(url):
     r = requests.get(url)
