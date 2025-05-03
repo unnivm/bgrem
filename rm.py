@@ -1,4 +1,3 @@
-from streamlit_lottie import st_lottie
 import streamlit as st
 from PIL import Image, UnidentifiedImageError
 from rembg import remove
@@ -15,14 +14,6 @@ def load_lottieurl(url):
         return None
     return r.json()
 
-# Custom background style for Lottie container
-lottie_bg_style = """
-<div style="background-color: #1f2937; padding: 20px; border-radius: 12px; width: fit-content; margin: auto;">
-  <div id="lottie-container"></div>
-</div>
-"""
-# Show styled container
-#st.markdown(lottie_bg_style, unsafe_allow_html=True)
 
 current_hour = datetime.now().hour
 
@@ -48,8 +39,8 @@ st.markdown(f"""
     </style>
 """, unsafe_allow_html=True)
 
-lottie_animation = load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_jcikwtux.json")
-st_lottie(lottie_animation, speed=1, reverse=False, loop=True, quality="high", height=200)
+#lottie_animation = load_lottieurl("https://assets6.lottiefiles.com/packages/lf20_jcikwtux.json")
+#st_lottie(lottie_animation, speed=1, reverse=False, loop=True, quality="high", height=200)
 # Page configuration
 #st.set_page_config(page_title="Background Remover & Editor", layout="centered")
 
